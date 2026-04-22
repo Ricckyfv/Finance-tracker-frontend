@@ -1,0 +1,72 @@
+<header class="mb-8 md:mb-10">
+  <p class="text-on-surface-variant font-headline tracking-widest text-xs uppercase mb-2">Historial Completo</p>
+  <h1 class="text-2xl md:text-4xl font-extrabold text-primary font-headline tracking-tight">Mis Transacciones</h1>
+</header>
+
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-surface-variant overflow-hidden">
+
+  <div class="hidden md:grid md:grid-cols-12 gap-4 p-6 border-b border-surface-variant bg-surface-bright text-xs font-bold text-outline uppercase tracking-widest">
+    <div class="col-span-5">Detalle</div>
+    <div class="col-span-3">Fecha</div>
+    <div class="col-span-2 text-right">Monto</div>
+    <div class="col-span-2 text-center">Acciones</div>
+  </div>
+
+  <div class="divide-y divide-surface-variant">
+
+    <div *ngFor="let tx of transactions" class="flex flex-row md:grid md:grid-cols-12 items-center gap-3 md:gap-4 p-4 md:p-6 hover:bg-surface-container-low transition-colors group">
+
+      <div class="flex items-center gap-3 flex-1 min-w-0 md:col-span-5">
+        <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl flex shrink-0 items-center justify-center transition-colors"
+             [ngClass]="tx.categoryType === 'INCOME' ? 'bg-secondary/10 text-secondary' : 'bg-primary/10 text-primary'">
+          <span class="material-symbols-outlined text-[20px] md:text-[24px]">
+              {{ getCategoryIcon(tx.categoryName) }}
+          </span>
+        </div>
+
+        <div class="min-w-0 flex-1">
+          <h4 class="font-bold text-on-surface font-headline truncate flex items-center gap-1 text-sm md:text-base">
+            <span class="truncate">{{ tx.description }}</span>
+            <span *ngIf="tx.recurring" class="material-symbols-outlined text-[14px] text-outline opacity-60 shrink-0" title="Transacción Recurrente">sync</span>
+          </h4>
+          <p class="text-[11px] md:text-xs text-on-surface-variant truncate mt-0.5">
+            {{ tx.categoryName }}
+            <span class="md:hidden"> • {{ tx.transactionDate | date:'shortDate' }}</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="hidden md:block md:col-span-3 text-sm text-on-surface-variant font-medium">
+        {{ tx.transactionDate | date:'mediumDate' }}
+      </div>
+
+      <div class="shrink-0 md:col-span-2 text-right font-bold text-sm md:text-lg whitespace-nowrap"
+           [ngClass]="tx.categoryType === 'INCOME' ? 'text-secondary' : 'text-primary'">
+        {{ tx.categoryType === 'INCOME' ? '+' : '-' }}{{ tx.amount | currency }}
+      </div>
+
+      <div class="shrink-0 md:col-span-2 flex justify-end md:justify-center opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+        <button (click)="openDeleteModal(tx.id)" class="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-error hover:bg-error-container transition-colors" title="Eliminar">
+          <span class="material-symbols-outlined text-[18px] md:text-[20px]">delete</span>
+        </button>
+      </div>
+
+    </div>
+
+    <div *ngIf="transactions.length === 0" class="p-12 text-center text-on-surface-variant flex flex-col items-center">
+      <span class="material-symbols-outlined text-6xl mb-4 opacity-20">receipt_long</span>
+      <p class="font-headline font-bold text-lg">No hay transacciones registradas</p>
+      <p class="text-sm">Vuelve al Dashboard para registrar tu primer movimiento.</p>
+    </div>
+
+  </div>
+</div>
+
+<app-confirm-delete-modal
+  *ngIf="transactionToDeleteId !== null"
+  title="Eliminar Transacción"
+  message="¿Estás seguro de que deseas eliminar este movimiento? Si es un ahorro, el dinero volverá a tu meta."
+  [isLoading]="isDeleting"
+  (confirm)="confirmDelete()"
+  (cancel)="closeDeleteModal()">
+</app-confirm-delete-modal>

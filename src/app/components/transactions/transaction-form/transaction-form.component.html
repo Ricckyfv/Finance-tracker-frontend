@@ -1,0 +1,64 @@
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm">
+  <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all">
+
+    <div class="p-6 text-white flex justify-between items-center"
+         [ngClass]="type === 'EXPENSE' ? 'bg-primary' : 'bg-secondary'">
+      <h3 class="text-xl font-bold font-headline">
+        {{ type === 'EXPENSE' ? 'Registrar Gasto' : 'Registrar Ingreso' }}
+      </h3>
+      <button (click)="close.emit()" class="material-symbols-outlined">close</button>
+    </div>
+
+    <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()" class="p-8 space-y-5">
+      <div>
+        <label class="block text-xs font-bold text-outline uppercase tracking-widest mb-2">Monto</label>
+        <div class="relative">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-bold">$</span>
+          <input type="number" formControlName="amount" class="w-full pl-8 pr-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2" [ngClass]="type === 'EXPENSE' ? 'focus:ring-primary' : 'focus:ring-secondary'" placeholder="0.00">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-outline uppercase tracking-widest mb-2">Descripción</label>
+        <input type="text" formControlName="description" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2" placeholder="Ej. Almuerzo, Salario...">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-outline uppercase tracking-widest mb-2">Categoría</label>
+        <select formControlName="categoryId" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2">
+          <option value="">Selecciona una categoría</option>
+          <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-outline uppercase tracking-widest mb-2">Fecha</label>
+        <input type="date" formControlName="transactionDate" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2">
+      </div>
+
+      <div class="flex items-center gap-3 py-2">
+        <div class="relative flex items-center">
+          <input
+            type="checkbox"
+            id="recurring"
+            formControlName="recurring"
+            class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary transition-colors cursor-pointer"
+            [ngClass]="type === 'EXPENSE' ? 'text-primary focus:ring-primary' : 'text-secondary focus:ring-secondary'"
+          >
+        </div>
+        <label for="recurring" class="text-sm font-semibold text-on-surface-variant cursor-pointer select-none">
+          Marcar como {{ type === 'EXPENSE' ? 'gasto' : 'ingreso' }} recurrente
+        </label>
+      </div>
+
+      <div class="flex gap-3 pt-4">
+        <button type="button" (click)="close.emit()" class="flex-1 py-3 font-bold text-outline hover:bg-surface-container rounded-xl transition-colors">Cancelar</button>
+        <button type="submit" [disabled]="transactionForm.invalid"
+                class="flex-1 py-3 font-bold text-white rounded-xl shadow-lg transition-transform active:scale-95 disabled:opacity-50"
+                [ngClass]="type === 'EXPENSE' ? 'bg-primary' : 'bg-secondary'">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

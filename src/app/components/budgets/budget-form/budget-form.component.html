@@ -1,0 +1,129 @@
+<div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm">
+  <div class="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all editorial-shadow">
+
+    <div class="hero-gradient p-8 text-white flex justify-between items-center">
+      <div class="space-y-1">
+        <p class="text-xs font-bold text-inverse-primary tracking-widest uppercase">Planificación</p>
+        <h3 class="text-2xl font-bold font-headline">Nuevo Presupuesto</h3>
+      </div>
+      <button (click)="close.emit()" class="material-symbols-outlined opacity-70 hover:opacity-100 transition-opacity text-3xl">close</button>
+    </div>
+
+    <form [formGroup]="budgetForm" (ngSubmit)="onSubmit()" class="p-8 space-y-6 relative">
+
+      <div class="relative z-50">
+        <label class="block text-xs font-bold text-outline uppercase tracking-widest mb-2">Categoría a Limitar</label>
+
+        <input type="hidden" formControlName="categoryId">
+
+        <button type="button" (click)="toggleDropdown()"
+                class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-on-surface flex items-center justify-between transition-colors hover:bg-surface-container">
+
+          <div class="flex items-center gap-3">
+            <ng-container *ngIf="selectedCategory; else placeholderTemplate">
+              <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                <span class="material-symbols-outlined text-[18px]">{{ getCategoryIcon(selectedCategory.name) }}</span>
+              </div>
+              <span class="font-bold text-sm">{{ selectedCategory.name }}</span>
+            </ng-container>
+
+            <ng-template #placeholderTemplate>
+              <span class="text-outline-variant font-medium">Selecciona una categoría</span>
+            </ng-template>
+          </div>
+
+          <span class="material-symbols-outlined text-outline transition-transform duration-200" [class.rotate-180]="isDropdownOpen">expand_more</span>
+        </button>
+
+        <div *ngIf="isDropdownOpen" (click)="isDropdownOpen = false" class="fixed inset-0 z-40"></div>
+
+        <div *ngIf="isDropdownOpen"
+             class="absolute z-50 w-full mt-2 bg-surface-container-lowest border border-surface-variant rounded-xl shadow-xl max-h-56 overflow-y-auto py-2 animate-fade-in">
+
+          <button *ngFor="let cat of categories"
+                  type="button"
+                  (click)="selectCategory(cat)"
+                  class="w-full flex items-center gap-3 px-4 py-3 hover:bg-surface-container-low transition-colors text-left group"
+                  [class.bg-primary-container]="selectedCategory?.id === cat.id">
+
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+                 [ngClass]="selectedCategory?.id === cat.id ? 'bg-primary/20 text-primary' : 'bg-surface-variant text-on-surface-variant group-hover:bg-primary/10 group-hover:text-primary'">
+              <span class="material-symbols-outlined text-[18px]">{{ getCategoryIcon(cat.name) }}</span>
+            </div>
+
+            <span class="font-medium text-sm flex-1" [ngClass]="selectedCategory?.id === cat.id ? 'text-primary font-bold' : 'text-on-surface'">
+              {{ cat.name }}
+            </span>
+
+            <span *ngIf="selectedCategory?.id === cat.id" class="material-symbols-outlined text-primary text-sm">check</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="relative z-10">
+        <label class="block text-xs font-bold text-outline uppercase tracking-widest mb-2">Límite Mensual</label>
+        <div class="relative">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-bold">$</span>
+          <input type="number" formControlName="amountLimit" class="w-full pl-8 pr-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary font-bold text-lg" placeholder="0.00">
+        </div>
+      </div>
+
+      <div class="flex gap-4 relative z-10">
+        <div class="flex-1">
+          <label class="block text-xs font-bold text-outline uppercase tracking-widest mb-2">Mes</label>
+          <input type="number" formControlName="month" min="1" max="12" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-center font-bold">
+        </div>
+        <div class="flex-1">
+          <label class="block text-xs font-bold text-outline uppercase tracking-widest mb-2">Año</label>
+          <input type="number" formControlName="year" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-center font-bold">
+        </div>
+      </div>
+
+      <div class="flex gap-3 pt-6 relative z-10">
+        <button type="button" (click)="close.emit()" class="flex-1 py-3 font-bold text-outline hover:bg-surface-container rounded-xl transition-colors">Cancelar</button>
+        <button type="submit" [disabled]="budgetForm.invalid"
+                class="flex-1 py-3 font-bold text-white hero-gradient rounded-xl shadow-lg transition-transform active:scale-95 disabled:opacity-50 disabled:active:scale-100">
+          Guardar
+        </button>
+      </div>
+    </form>
+
+    <!-- <form [formGroup]="budgetForm" (ngSubmit)="onSubmit()" class="p-8 space-y-6">
+
+      <div>
+        <label class="block text-xs font-bold text-outline uppercase tracking-widest mb-2">Categoría a Limitar</label>
+        <select formControlName="categoryId" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-on-surface">
+          <option value="">Selecciona una categoría</option>
+          <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-outline uppercase tracking-widest mb-2">Límite Mensual</label>
+        <div class="relative">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-bold">$</span>
+          <input type="number" formControlName="amountLimit" class="w-full pl-8 pr-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary" placeholder="0.00">
+        </div>
+      </div>
+
+      <div class="flex gap-4">
+        <div class="flex-1">
+          <label class="block text-xs font-bold text-outline uppercase tracking-widest mb-2">Mes</label>
+          <input type="number" formControlName="month" min="1" max="12" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-center">
+        </div>
+        <div class="flex-1">
+          <label class="block text-xs font-bold text-outline uppercase tracking-widest mb-2">Año</label>
+          <input type="number" formControlName="year" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary text-center">
+        </div>
+      </div>
+
+      <div class="flex gap-3 pt-6">
+        <button type="button" (click)="close.emit()" class="flex-1 py-3 font-bold text-outline hover:bg-surface-container rounded-xl transition-colors">Cancelar</button>
+        <button type="submit" [disabled]="budgetForm.invalid"
+                class="flex-1 py-3 font-bold text-white hero-gradient rounded-xl shadow-lg transition-transform active:scale-95 disabled:opacity-50">
+          Guardar Presupuesto
+        </button>
+      </div>
+    </form> -->
+  </div>
+</div>

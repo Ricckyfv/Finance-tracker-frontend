@@ -1,0 +1,119 @@
+<main class="min-h-screen flex flex-col md:flex-row overflow-hidden bg-surface font-body text-on-surface antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+
+  <section class="relative hidden md:flex md:w-1/2 bg-gradient-to-br from-[#00113a] to-[#002366] flex-col justify-between p-12 lg:p-20 overflow-hidden">
+    <div class="absolute inset-0 z-0 opacity-40">
+      <img alt="Detalle arquitectónico" class="w-full h-full object-cover grayscale mix-blend-overlay" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"/>
+    </div>
+
+    <div class="relative z-10">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center">
+          <span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+        </div>
+        <span class="font-headline text-2xl font-black tracking-tight text-white">Finance Tracker</span>
+      </div>
+    </div>
+
+    <div class="relative z-10 max-w-lg">
+      <h1 class="font-headline text-5xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tighter mb-8">
+        Tu riqueza, <br/>
+        <span class="text-secondary-fixed">reimaginada.</span>
+      </h1>
+      <p class="text-primary-fixed-dim text-xl font-medium leading-relaxed opacity-80">
+        Únete a un santuario financiero exclusivo donde los datos se encuentran con el diseño. Experimenta una gestión de precisión adaptada a la era moderna.
+      </p>
+    </div>
+
+    <div class="relative z-10 flex items-center gap-6">
+    </div>
+  </section>
+
+  <section class="flex-1 flex flex-col justify-center items-center px-6 py-12 lg:px-24 bg-surface">
+    <div class="w-full max-w-md space-y-10">
+
+      <div *ngIf="!showSuccessMessage" class="space-y-2">
+        <h2 class="font-headline text-3xl font-extrabold text-primary tracking-tight">Crea tu cuenta</h2>
+        <p class="text-on-surface-variant font-medium">¿Ya tienes una cuenta? <a routerLink="/login" class="text-secondary font-bold hover:underline cursor-pointer">Inicia sesión</a></p>
+      </div>
+
+      <div *ngIf="errorMessage" class="bg-error-container text-on-error-container p-4 rounded-xl text-sm font-bold flex items-center gap-2">
+        <span class="material-symbols-outlined">error</span>
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="showSuccessMessage" class="flex flex-col items-center justify-center py-12 text-center animate-fade-in">
+        <div class="w-24 h-24 bg-secondary/10 rounded-full flex items-center justify-center mb-8 relative">
+          <div class="absolute inset-0 border-4 border-secondary rounded-full animate-[ping_1.5s_cubic-bezier(0,0,0.2,1)_infinite] opacity-20"></div>
+          <span class="material-symbols-outlined text-5xl text-secondary">check_circle</span>
+        </div>
+
+        <h3 class="font-headline text-3xl font-extrabold text-primary mb-3 tracking-tight">¡Bienvenido al Finance Tracker!</h3>
+        <p class="text-on-surface-variant text-lg font-medium mb-12">
+          Tu cuenta ha sido creada exitosamente.
+        </p>
+
+        <div class="flex items-center gap-3 text-sm font-bold text-outline uppercase tracking-widest">
+          <span class="material-symbols-outlined animate-spin text-lg">progress_activity</span>
+          Redirigiendo...
+        </div>
+      </div>
+
+      <form *ngIf="!showSuccessMessage" [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div class="space-y-4">
+
+          <div class="space-y-1">
+            <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-widest pl-1" for="fullname">Nombre Completo</label>
+            <input formControlName="fullname" class="w-full px-4 py-4 bg-surface-container-highest border-none rounded-lg focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all placeholder:text-outline-variant outline-none" id="fullname" placeholder="Ej: Julián Riqueza" type="text"/>
+            <p *ngIf="registerForm.get('fullname')?.invalid && registerForm.get('fullname')?.touched" class="text-error text-xs pl-1 font-medium mt-1">El nombre es requerido (mínimo 3 letras).</p>
+          </div>
+
+          <div class="space-y-1">
+            <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-widest pl-1" for="email">Correo Electrónico</label>
+            <input formControlName="email" class="w-full px-4 py-4 bg-surface-container-highest border-none rounded-lg focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all placeholder:text-outline-variant outline-none" id="email" placeholder="julian@ejemplo.com" type="email"/>
+            <p *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-error text-xs pl-1 font-medium mt-1">Ingresa un correo electrónico válido.</p>
+          </div>
+
+          <div class="space-y-1">
+            <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-widest pl-1" for="password">Contraseña</label>
+            <div class="relative">
+              <input formControlName="password" [type]="showPassword ? 'text' : 'password'" class="w-full px-4 py-4 bg-surface-container-highest border-none rounded-lg focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all placeholder:text-outline-variant outline-none" id="password" placeholder="••••••••"/>
+              <button (click)="togglePasswordVisibility('password')" type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined text-[20px]">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
+              </button>
+            </div>
+            <p *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-error text-xs pl-1 font-medium mt-1">La contraseña debe tener al menos 6 caracteres.</p>
+          </div>
+
+          <div class="space-y-1">
+            <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-widest pl-1" for="confirmPassword">Confirmar Contraseña</label>
+            <div class="relative">
+              <input formControlName="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" class="w-full px-4 py-4 bg-surface-container-highest border-none rounded-lg focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest transition-all placeholder:text-outline-variant outline-none" id="confirmPassword" placeholder="••••••••"/>
+              <button (click)="togglePasswordVisibility('confirm')" type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined text-[20px]">{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</span>
+              </button>
+            </div>
+            <p *ngIf="registerForm.hasError('passwordsMismatch') && registerForm.get('confirmPassword')?.touched" class="text-error text-xs pl-1 font-medium mt-1">Las contraseñas no coinciden.</p>
+          </div>
+
+        </div>
+
+        <div class="flex items-start gap-3">
+          <input formControlName="terms" class="mt-1 w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary cursor-pointer" id="terms" type="checkbox"/>
+          <label class="text-sm text-on-surface-variant leading-snug cursor-pointer" for="terms">
+            Acepto los <a class="text-primary font-semibold hover:underline">Términos de Servicio</a> y la <a class="text-primary font-semibold hover:underline">Política de Privacidad</a>.
+          </label>
+        </div>
+        <p *ngIf="registerForm.get('terms')?.invalid && registerForm.get('terms')?.touched" class="text-error text-xs pl-1 font-medium -mt-2">Debes aceptar los términos para continuar.</p>
+
+        <button type="submit" [disabled]="isLoading" class="w-full flex justify-center items-center gap-2 py-4 bg-gradient-to-br from-[#00113a] to-[#002366] text-white rounded-full font-headline font-bold text-lg shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-transform disabled:opacity-70 disabled:hover:scale-100 disabled:cursor-not-allowed">
+          <span *ngIf="isLoading" class="material-symbols-outlined animate-spin">progress_activity</span>
+          {{ isLoading ? 'Creando cuenta...' : 'Registrarse' }}
+        </button>
+      </form>
+
+      <div class="pt-8 text-center">
+        <p class="text-[10px] font-bold text-outline uppercase tracking-[0.2em]">Finance Tracker &copy; 2026. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </section>
+</main>

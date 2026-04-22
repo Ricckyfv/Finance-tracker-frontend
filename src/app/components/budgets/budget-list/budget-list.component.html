@@ -1,0 +1,106 @@
+<div class="p-4 md:p-8 lg:p-12 max-w-6xl mx-auto space-y-8 md:space-y-12">
+
+  <section class="flex flex-col md:flex-row md:justify-between md:items-end gap-4 md:gap-6">
+    <div class="space-y-2">
+      <p class="text-secondary font-semibold tracking-widest uppercase text-xs">Asignación Mensual</p>
+      <h1 class="font-headline text-2xl md:text-4xl font-extrabold tracking-tight text-primary">Presupuestos</h1>
+    </div>
+    <button (click)="showModal = true" class="hero-gradient text-on-primary px-6 md:px-8 py-2 md:py-4 rounded-full font-headline font-bold text-xs md:text-sm shadow-lg flex items-center gap-2 hover:scale-[1.02] active:scale-95 transition-all w-full md:w-fit justify-center">
+      <span class="material-symbols-outlined text-lg">add</span>
+      Nuevo Presupuesto
+    </button>
+  </section>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+
+    <div *ngFor="let card of budgetCards" class="relative bg-surface-container-lowest p-6 md:p-8 rounded-2xl md:rounded-3xl editorial-shadow group hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+
+      <div>
+        <div class="flex justify-between items-start mb-8 md:mb-12">
+          <button (click)="openDeleteConfirm(card.id)" title="Eliminar presupuesto"
+                    class="w-8 h-8 rounded-full bg-error-container/50 text-error flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-error hover:text-white">
+              <span class="material-symbols-outlined text-[18px]">delete</span>
+          </button>
+          <span class="text-[10px] md:text-xs font-bold px-3 py-1 rounded-full transition-colors" [ngClass]="card.colorClass">
+            {{ card.statusText }}
+          </span>
+        </div>
+
+        <div class="space-y-1">
+          <h3 class="font-headline text-lg md:text-xl font-bold truncate">{{ card.categoryName }}</h3>
+          <p class="text-on-surface-variant text-xs md:text-sm">{{ card.percentage | number:'1.0-0' }}% Consumido</p>
+        </div>
+      </div>
+
+      <div class="mt-6 md:mt-8 space-y-3 md:space-y-4">
+        <div class="flex justify-between items-end">
+          <span class="text-xl md:text-2xl font-black text-primary">{{ card.spent | currency }}</span>
+          <span class="text-[10px] md:text-xs text-on-surface-variant font-bold">DE {{ card.limit | currency }}</span>
+        </div>
+
+        <div class="h-1.5 md:h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+          <div class="h-full rounded-full transition-all duration-1000 ease-out"
+               [ngClass]="card.barClass"
+               [style.width.%]="card.percentage">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <div *ngIf="budgetCards.length === 0" class="col-span-full p-8 md:p-12 text-center bg-surface-container-low rounded-2xl md:rounded-3xl border-2 border-dashed border-outline-variant">
+      <span class="material-symbols-outlined text-3xl md:text-4xl text-outline mb-4">account_balance_wallet</span>
+      <h3 class="font-headline text-lg md:text-xl font-bold text-primary">Sin presupuestos este mes</h3>
+      <p class="text-on-surface-variant text-sm mt-2">Haz clic en "Nuevo Presupuesto" para empezar a controlar tus gastos.</p>
+    </div>
+
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12 pt-6 md:pt-8 lg:pt-8">
+    <div class="lg:col-span-2 bg-surface-container-low rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-10 flex flex-col justify-between min-h-[300px] md:min-h-[400px]">
+      <div>
+        <h2 class="font-headline text-xl md:text-2xl font-bold text-primary mb-2">Proyección de Gastos</h2>
+        <p class="text-on-surface-variant text-sm max-w-md">{{ projectionText }}</p>
+      </div>
+      <div class="relative h-40 md:h-48 w-full mt-8 md:mt-12 overflow-hidden flex items-end gap-0.5 md:gap-1">
+        <div *ngFor="let bar of chartBars; let i = index"
+             class="w-full bg-secondary/40 rounded-t-lg transition-all duration-1000"
+             [ngClass]="bar.opacity"
+             [style.height]="bar.height">
+             <div *ngIf="i === 3" class="absolute -top-8 md:-top-10 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] px-2 py-1 rounded-sm">HOY</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-6 md:space-y-8">
+      <h2 class="font-headline text-xl md:text-2xl font-bold text-primary">Observaciones</h2>
+      <div class="space-y-4 md:space-y-6">
+        <div *ngFor="let insight of insights" class="flex gap-3 md:gap-4 animate-fade-in">
+          <span class="material-symbols-outlined text-lg md:text-xl mt-1 flex-shrink-0" [ngClass]="insight.iconClass">{{ insight.icon }}</span>
+          <div class="space-y-1 min-w-0">
+            <h4 class="font-bold text-sm">{{ insight.title }}</h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">{{ insight.description }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="insights.length === 0" class="text-xs text-on-surface-variant italic">
+          No hay alertas críticas por ahora. Mantén el buen ritmo.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-budget-form *ngIf="showModal" (close)="showModal = false" (saved)="loadData()"></app-budget-form>
+
+<app-confirm-delete-modal
+  *ngIf="budgetToDeleteId !== null"
+  title="Eliminar Presupuesto"
+  message="¿Estás seguro de que deseas eliminar este presupuesto? Se borrarán sus límites y progresos. Esta acción no se puede deshacer."
+  [isLoading]="isDeleting"
+  (confirm)="confirmDelete()"
+  (cancel)="cancelDelete()">
+</app-confirm-delete-modal>

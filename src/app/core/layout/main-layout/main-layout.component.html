@@ -1,0 +1,130 @@
+<!-- <div class="bg-surface text-on-surface min-h-screen">
+
+  <aside class="fixed left-0 top-0 h-full flex flex-col justify-between py-8 bg-slate-100 dark:bg-slate-900 w-64 border-none z-50">
+    <div class="px-6">
+      <div class="flex items-center gap-3 mb-10">
+        <img alt="User profile photo" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWs0dVgseuW1U2Z5CfRDjUG6OSG3KC6GoPPaHRLgOiXyAjob3srYSF34QPXhis3uk4yfk6wAScTDmevnTe9plplqdrLgYkAYNSOfZs92869O9knzZiBBk8drreVcq1MRdQTZD_cNZLaNulluT7JMgR3vuv6oJgMNCvRtkwX-iFXc1lgHjH7DY_12XmZ0_PuvXZVbmw_xz-LdXi8kZLTvoEWJ7buskShwcUfY4swXHlyX9n2F-TQ1kpZmNSYd-AWrbMZBCQKFtF92I"/>
+        <div>
+          <h2 class="text-xl font-bold text-blue-950 dark:text-blue-200 font-headline leading-tight">Mi Perfil</h2>
+          <p class="text-xs font-['Manrope'] font-semibold tracking-tight text-slate-500 w-32 truncate" title="{{ userEmail }}">
+            {{ userEmail }}
+          </p>
+        </div>
+      </div>
+
+      <nav class="space-y-2">
+        <a routerLink="/dashboard" routerLinkActive="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-l-4 border-emerald-600" class="flex items-center gap-3 py-3 px-4 text-slate-500 hover:bg-slate-200 transition-colors font-['Manrope'] font-semibold tracking-tight">
+          <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a routerLink="/budgets" routerLinkActive="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-l-4 border-emerald-600" class="flex items-center gap-3 py-3 px-4 text-slate-500 hover:bg-slate-200 transition-colors font-['Manrope'] font-semibold tracking-tight">
+          <span class="material-symbols-outlined">account_balance_wallet</span>
+          <span>Presupuestos</span>
+        </a>
+        <a routerLink="/transactions" routerLinkActive="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-l-4 border-emerald-600" class="flex items-center gap-3 py-3 px-4 text-slate-500 hover:bg-slate-200 transition-colors font-['Manrope'] font-semibold tracking-tight">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <span>Transacciones</span>
+        </a>
+        <a routerLink="/goals" routerLinkActive="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-l-4 border-emerald-600" class="flex items-center gap-3 py-3 px-4 text-slate-500 hover:bg-slate-200 transition-colors font-['Manrope'] font-semibold tracking-tight">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <span>Metas</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="px-6">
+      <button (click)="onLogout()" class="w-full flex items-center gap-3 py-3 px-4 text-slate-500 hover:bg-red-100 hover:text-red-600 transition-colors font-['Manrope'] font-semibold tracking-tight rounded-lg">
+        <span class="material-symbols-outlined" data-icon="logout">logout</span>
+        <span>Cerrar Sesión</span>
+      </button>
+    </div>
+  </aside>
+
+  <header class="fixed top-0 right-0 flex justify-between items-center pl-72 pr-8 w-full h-16 bg-white dark:bg-slate-950 shadow-sm shadow-blue-900/5 z-40">
+    <div class="flex items-center">
+      <span class="text-2xl font-black text-blue-950 dark:text-white font-headline">Finance Tracker</span>
+    </div>
+    <div class="flex items-center gap-6">
+      <div class="flex items-center gap-4">
+        <button class="material-symbols-outlined text-blue-950 dark:text-white opacity-80 hover:text-emerald-500 transition-colors">notifications</button>
+        <button class="material-symbols-outlined text-blue-950 dark:text-white opacity-80 hover:text-emerald-500 transition-colors">settings</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-24 pl-72 pr-8 pb-12 min-h-screen">
+    <router-outlet></router-outlet>
+  </main>
+</div> -->
+
+<div class="bg-surface text-on-surface min-h-screen relative">
+
+  <div
+    *ngIf="isMobileMenuOpen"
+    (click)="closeMobileMenu()"
+    class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden transition-opacity">
+  </div>
+
+  <aside
+    [class]="isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'"
+    class="fixed left-0 top-0 h-full flex flex-col justify-between py-8 bg-slate-100 dark:bg-slate-900 w-64 border-none z-50 transition-transform duration-300 md:translate-x-0 shadow-2xl md:shadow-none">
+
+    <div class="px-6">
+      <div class="flex items-center gap-3 mb-10">
+        <img alt="User profile photo" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWs0dVgseuW1U2Z5CfRDjUG6OSG3KC6GoPPaHRLgOiXyAjob3srYSF34QPXhis3uk4yfk6wAScTDmevnTe9plplqdrLgYkAYNSOfZs92869O9knzZiBBk8drreVcq1MRdQTZD_cNZLaNulluT7JMgR3vuv6oJgMNCvRtkwX-iFXc1lgHjH7DY_12XmZ0_PuvXZVbmw_xz-LdXi8kZLTvoEWJ7buskShwcUfY4swXHlyX9n2F-TQ1kpZmNSYd-AWrbMZBCQKFtF92I"/>
+        <div>
+          <h2 class="text-xl font-bold text-blue-950 dark:text-blue-200 font-headline leading-tight">Mi Perfil</h2>
+          <p class="text-xs font-['Manrope'] font-semibold tracking-tight text-slate-500 w-32 truncate" title="{{ userEmail }}">
+            {{ userEmail }}
+          </p>
+        </div>
+      </div>
+
+      <nav class="space-y-2">
+        <a routerLink="/dashboard" routerLinkActive="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-l-4 border-emerald-600" (click)="closeMobileMenu()" class="flex items-center gap-3 py-3 px-4 text-slate-500 hover:bg-slate-200 transition-colors font-['Manrope'] font-semibold tracking-tight">
+          <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a routerLink="/budgets" routerLinkActive="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-l-4 border-emerald-600" (click)="closeMobileMenu()" class="flex items-center gap-3 py-3 px-4 text-slate-500 hover:bg-slate-200 transition-colors font-['Manrope'] font-semibold tracking-tight">
+          <span class="material-symbols-outlined">account_balance_wallet</span>
+          <span>Presupuestos</span>
+        </a>
+        <a routerLink="/transactions" routerLinkActive="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-l-4 border-emerald-600" (click)="closeMobileMenu()" class="flex items-center gap-3 py-3 px-4 text-slate-500 hover:bg-slate-200 transition-colors font-['Manrope'] font-semibold tracking-tight">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <span>Transacciones</span>
+        </a>
+        <a routerLink="/goals" routerLinkActive="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-l-4 border-emerald-600" (click)="closeMobileMenu()" class="flex items-center gap-3 py-3 px-4 text-slate-500 hover:bg-slate-200 transition-colors font-['Manrope'] font-semibold tracking-tight">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <span>Metas</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="px-6">
+      <button (click)="onLogout()" class="w-full flex items-center gap-3 py-3 px-4 text-slate-500 hover:bg-red-100 hover:text-red-600 transition-colors font-['Manrope'] font-semibold tracking-tight rounded-lg">
+        <span class="material-symbols-outlined" data-icon="logout">logout</span>
+        <span>Cerrar Sesión</span>
+      </button>
+    </div>
+  </aside>
+
+  <header class="fixed top-0 right-0 flex justify-between items-center pl-4 md:pl-72 pr-4 md:pr-8 w-full h-16 bg-white dark:bg-slate-950 shadow-sm shadow-blue-900/5 z-30 transition-all duration-300">
+    <div class="flex items-center gap-4">
+      <button (click)="toggleMobileMenu()" class="md:hidden flex items-center justify-center p-2 text-blue-950 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+
+      <span class="text-xl md:text-2xl font-black text-blue-950 dark:text-white font-headline">Finance Tracker</span>
+    </div>
+
+    <div class="flex items-center gap-4 md:gap-6">
+      <button class="material-symbols-outlined text-blue-950 dark:text-white opacity-80 hover:text-emerald-500 transition-colors">notifications</button>
+      <button class="material-symbols-outlined text-blue-950 dark:text-white opacity-80 hover:text-emerald-500 transition-colors">settings</button>
+    </div>
+  </header>
+
+  <main class="pt-24 px-4 md:pl-72 md:pr-8 pb-12 min-h-screen transition-all duration-300">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

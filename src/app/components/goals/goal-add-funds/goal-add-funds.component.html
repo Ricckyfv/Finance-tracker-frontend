@@ -1,0 +1,26 @@
+<div class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-primary/20 backdrop-blur-sm transition-all">
+  <div class="bg-surface-container-lowest rounded-[2rem] p-8 max-w-sm w-full shadow-2xl relative border border-white/20">
+
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-extrabold text-primary font-headline tracking-tight">Abonar a la Meta</h3>
+      <button (click)="closeModal()" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors">
+        <span class="material-symbols-outlined text-sm">close</span>
+      </button>
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Cantidad a ingresar ($)</label>
+      <div class="relative">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-bold text-xl">$</span>
+        <input type="number" [(ngModel)]="fundsAmount" placeholder="100.00"
+               class="w-full bg-surface-container-low border-none rounded-xl pl-10 pr-4 py-4 text-3xl text-primary font-black focus:ring-2 focus:ring-secondary/50 transition-all text-center">
+      </div>
+    </div>
+
+    <button (click)="confirmAddFunds()" [disabled]="!fundsAmount || isAddingFunds"
+            class="w-full mt-8 bg-secondary text-white py-4 rounded-xl font-headline font-bold text-sm tracking-widest uppercase hover:bg-secondary/90 transition-colors disabled:opacity-50 flex justify-center items-center gap-2">
+      <span *ngIf="isAddingFunds" class="material-symbols-outlined animate-spin text-lg">progress_activity</span>
+      Confirmar Ingreso
+    </button>
+  </div>
+</div>

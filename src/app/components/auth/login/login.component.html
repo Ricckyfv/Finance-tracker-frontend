@@ -1,0 +1,90 @@
+<main class="flex min-h-screen bg-surface font-body text-on-surface antialiased overflow-hidden selection:bg-secondary-container selection:text-on-secondary-container">
+
+  <section class="hidden lg:flex w-1/2 bg-gradient-to-br from-[#00113a] to-[#002366] relative items-center justify-center p-16 overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
+      <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-secondary-fixed opacity-30 blur-[120px]"></div>
+      <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-primary-container opacity-50 blur-[100px]"></div>
+    </div>
+
+    <div class="relative z-10 max-w-xl">
+      <div class="mb-12">
+        <span class="text-secondary-fixed font-headline font-extrabold tracking-widest uppercase text-sm block mb-4">Fundado en 1926</span>
+        <h1 class="text-white font-headline text-6xl font-black tracking-tight leading-[1.1] mb-8">
+          Tu riqueza, cuidada como una <span class="italic font-light">obra de arte.</span>
+        </h1>
+        <div class="h-1 w-24 bg-secondary-fixed rounded-full"></div>
+      </div>
+      <div class="backdrop-blur-[20px] bg-white/5 p-8 rounded-xl border border-white/10">
+        <p class="text-primary-fixed font-body text-lg leading-relaxed">
+          Entra a un santuario financiero diseñado para ofrecer claridad, autoridad y profundidad estructural. Finance Tracker lleva la precisión de la alta gestión a tu balance personal.
+        </p>
+      </div>
+    </div>
+
+    <img alt="Architectural Abstract" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-40" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"/>
+  </section>
+
+  <section class="w-full lg:w-1/2 flex items-center justify-center p-8 bg-surface-bright relative">
+    <div class="w-full max-w-md">
+
+      <div class="mb-12">
+        <h2 class="font-headline font-black text-3xl text-primary tracking-tight">Finance Tracker</h2>
+        <p class="text-on-surface-variant mt-2 font-body">Bienvenido de nuevo a tu santuario financiero.</p>
+      </div>
+
+      <div *ngIf="errorMessage" class="mb-6 bg-error-container text-on-error-container p-4 rounded-xl text-sm font-bold flex items-center gap-2 animate-fade-in">
+        <span class="material-symbols-outlined">error</span>
+        {{ errorMessage }}
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold text-on-surface-variant font-label" for="email">Correo Electrónico</label>
+          <div class="relative">
+            <input formControlName="email" class="w-full px-4 py-4 bg-surface-container-highest border-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest rounded-b-sm transition-all duration-300 font-body outline-none placeholder:text-outline-variant" id="email" placeholder="nombre@ejemplo.com" type="email"/>
+          </div>
+          <p *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-error text-xs font-medium mt-1">Ingresa un correo válido.</p>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <label class="block text-sm font-semibold text-on-surface-variant font-label" for="password">Contraseña</label>
+            <a href="#" class="text-xs font-bold text-primary hover:text-primary-container transition-colors focus:outline-none">¿Olvidaste tu contraseña?</a>
+          </div>
+          <div class="relative">
+            <input formControlName="password" [type]="showPassword ? 'text' : 'password'" class="w-full px-4 py-4 bg-surface-container-highest border-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest rounded-b-sm transition-all duration-300 font-body outline-none placeholder:text-outline-variant" id="password" placeholder="••••••••"/>
+            <button (click)="togglePasswordVisibility()" type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary focus:outline-none">
+              <span class="material-symbols-outlined text-[20px]">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
+            </button>
+          </div>
+          <p *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-error text-xs font-medium mt-1">La contraseña es requerida.</p>
+        </div>
+
+        <!-- <div class="flex items-center">
+          <input formControlName="remember" class="h-4 w-4 text-primary focus:ring-primary border-outline-variant rounded-sm bg-surface-container-highest cursor-pointer" id="remember" type="checkbox"/>
+          <label class="ml-2 block text-sm text-on-surface-variant font-body cursor-pointer" for="remember">Recordarme</label>
+        </div> -->
+
+        <button type="submit" [disabled]="isLoading" class="w-full flex justify-center items-center gap-2 py-4 bg-gradient-to-br from-[#00113a] to-[#002366] text-white font-headline font-bold text-sm tracking-widest uppercase rounded-full shadow-lg hover:shadow-primary/20 transform transition-transform active:scale-95 duration-200 disabled:opacity-70 disabled:active:scale-100 disabled:cursor-not-allowed">
+          <span *ngIf="isLoading" class="material-symbols-outlined animate-spin text-lg">progress_activity</span>
+          {{ isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+        </button>
+      </form>
+
+      <p class="text-center text-sm text-on-surface-variant mt-10">
+        ¿No tienes una cuenta?
+        <a routerLink="/register" class="text-secondary font-bold hover:underline underline-offset-4 decoration-2 cursor-pointer">Regístrate</a>
+      </p>
+    </div>
+
+    <footer class="absolute bottom-0 w-full p-8 pointer-events-none">
+      <div class="flex flex-wrap justify-center lg:justify-end gap-6 text-[10px] uppercase tracking-widest font-bold text-on-surface-variant/40 pointer-events-auto">
+        <a class="hover:text-primary transition-colors cursor-pointer">Privacidad</a>
+        <a class="hover:text-primary transition-colors cursor-pointer">Términos</a>
+        <a class="hover:text-primary transition-colors cursor-pointer">Seguridad</a>
+        <span class="hidden md:inline">© 2026 Equilibrium Finance.</span>
+      </div>
+    </footer>
+  </section>
+</main>
