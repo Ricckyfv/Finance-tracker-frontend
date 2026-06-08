@@ -72,6 +72,22 @@
         </button>
       </form>
 
+             <div class="relative my-4">
+         <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-gray-500"></span>
+          </div>
+        </div>
+
+      <button
+       type="button"
+        (click)="entrarComoInvitado()"
+        class="w-full flex justify-center py-2 px-4 border border-blue-600 text-sm font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+        👁️ Entrar como Invitado
+      </button>
+
       <p class="text-center text-sm text-on-surface-variant mt-10">
         ¿No tienes una cuenta?
         <a routerLink="/register" class="text-secondary font-bold hover:underline underline-offset-4 decoration-2 cursor-pointer">Regístrate</a>

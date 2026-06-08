@@ -7,7 +7,7 @@ import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth/auth.interceptor';
 // 1. IMPORTAMOS LA LIBRERÍA DE GRÁFICOS
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import { loadingInterceptor } from './core/interceptors/loading.interceptor';
+import { loadingInterceptor } from './core/interceptors/loading/loading.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

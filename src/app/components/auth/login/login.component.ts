@@ -53,4 +53,26 @@ export class LoginComponent {
       }
     });
   }
+
+  entrarComoInvitado() {
+    this.isLoading = true;
+
+    //Creamos el objeto con las credenciales exactas del DataLoader
+    const credencialesInvitado = {
+      email: 'user@test.com',
+      password: 'password'
+    };
+
+    //Llamamos a tu servicio de autenticación (Asegúrate de que 'authService' sea el nombre que usas)
+    this.authService.login(credencialesInvitado).subscribe({
+      next: (response) => {
+
+        this.router.navigate(['/dashboard']); // Ajusta la ruta a la tuya
+      },
+      error: (error) => {
+        console.error('Error al entrar como invitado', error);
+        this.isLoading = false;
+      }
+    });
+  }
 }
