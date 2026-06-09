@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LoadingService } from './core/services/loading-service.service';
+import { LoadingService } from './core/services/loading/loading-service.service';
 
 @Component({
   selector: 'app-root',

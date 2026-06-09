@@ -9,7 +9,6 @@ import { AuthService } from '../../../core/services/auth/auth.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule], // <-- Importamos módulos necesarios
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   // Inyecciones de dependencias
